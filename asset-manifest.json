@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/Porsi/static/css/main.a617e044.chunk.css",
+    "main.js": "/Porsi/static/js/main.9df07c66.chunk.js",
+    "main.js.map": "/Porsi/static/js/main.9df07c66.chunk.js.map",
+    "runtime-main.js": "/Porsi/static/js/runtime-main.5051049a.js",
+    "runtime-main.js.map": "/Porsi/static/js/runtime-main.5051049a.js.map",
+    "static/js/2.d6188c50.chunk.js": "/Porsi/static/js/2.d6188c50.chunk.js",
+    "static/js/2.d6188c50.chunk.js.map": "/Porsi/static/js/2.d6188c50.chunk.js.map",
+    "static/js/3.c918f087.chunk.js": "/Porsi/static/js/3.c918f087.chunk.js",
+    "static/js/3.c918f087.chunk.js.map": "/Porsi/static/js/3.c918f087.chunk.js.map",
+    "index.html": "/Porsi/index.html",
+    "static/css/main.a617e044.chunk.css.map": "/Porsi/static/css/main.a617e044.chunk.css.map",
+    "static/js/2.d6188c50.chunk.js.LICENSE.txt": "/Porsi/static/js/2.d6188c50.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5051049a.js",
+    "static/js/2.d6188c50.chunk.js",
+    "static/css/main.a617e044.chunk.css",
+    "static/js/main.9df07c66.chunk.js"
+  ]
+}
