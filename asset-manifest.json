@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/Porsi/static/css/main.d776f81b.chunk.css",
-    "main.js": "/Porsi/static/js/main.b4f94a65.chunk.js",
-    "main.js.map": "/Porsi/static/js/main.b4f94a65.chunk.js.map",
+    "main.js": "/Porsi/static/js/main.ac8d336c.chunk.js",
+    "main.js.map": "/Porsi/static/js/main.ac8d336c.chunk.js.map",
     "runtime-main.js": "/Porsi/static/js/runtime-main.7ba13629.js",
     "runtime-main.js.map": "/Porsi/static/js/runtime-main.7ba13629.js.map",
     "static/css/2.983f79de.chunk.css": "/Porsi/static/css/2.983f79de.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.983f79de.chunk.css",
     "static/js/2.52f4be4c.chunk.js",
     "static/css/main.d776f81b.chunk.css",
-    "static/js/main.b4f94a65.chunk.js"
+    "static/js/main.ac8d336c.chunk.js"
   ]
 }
