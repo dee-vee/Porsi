@@ -10,8 +10,8 @@ function Sunrise() {
   var SunCalc = require("suncalc");
 
   const [zip_code, setZipCode] = useState("08823");
-  const [date, setDate] = useState();
-  const [dateTime, setDateTime] = useState();
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [dateTime, setDateTime] = useState((new Date().toISOString().slice(0, 10))+'T12:00:00');
   const [sun, setSun] = useState({ rise: "", set: "" });
   const [porsi, setPorsi] = useState();
   const [show, setShow] = useState(false);
