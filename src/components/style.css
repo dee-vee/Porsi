@@ -1,0 +1,19 @@
+
+.header {
+    background-color: lightblue;
+}
+
+.input-row {
+    width: 300px;
+    margin : auto;
+}
+
+.paper {
+    width: 300px;
+    margin: auto;
+}
+
+.row {
+    margin: 20px;
+}
+
