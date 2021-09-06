@@ -7,15 +7,45 @@ import style from "bootstrap/dist/css/bootstrap.css";
 import "./style.css";
 
 function Sunrise() {
+  //import suncalc package
   var SunCalc = require("suncalc");
 
+  //Set document title for tab name
+  useEffect(() => {
+    document.title = "Pachkan Calculator";
+  }, []);
+
+  //Intialize Form input states
   const [zip_code, setZipCode] = useState("08823");
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
-  const [dateTime, setDateTime] = useState((new Date().toISOString().slice(0, 10))+'T12:00:00');
+
+  //default date time to current date time
+  const [dateTime, setDateTime] = useState(
+    new Date().toISOString().slice(0, 10) + "T12:00:00"
+  );
+
+  //initalize state for sun times
   const [sun, setSun] = useState({ rise: "", set: "" });
+
+  //initalize states for calculated times
   const [porsi, setPorsi] = useState();
-  const [show, setShow] = useState(false);
+  const [navkarsi, setNavkarsi] = useState();
+  const [sadhporsi, setSadhporsi] = useState();
+  const [purimaddh, setPurimaddh] = useState();
+
+  //Address title 
+  const [addressTitle,setAddressTitle] = useState();
+
+  //is input form validated
   const [validate, setValidate] = useState(false);
+
+  //show parana times state
+  const [show, setShow] = useState(false);
+
+  //API key for geocoding
+  const API_KEY = "AIzaSyCItqD_bz3EaNVbnFP7aXzr_Thj0slENpU";
+
+  //handle input function
   const handleChangeZip = (e) => {
     setZipCode(e.target.value);
   };
@@ -25,20 +55,27 @@ function Sunrise() {
     setDateTime(`${e.target.value}T12:00:00`);
   };
 
-  const getSunTimes = () => {
-    // const response = await fetch(
-    //   `https://maps.googleapis.com/maps/api/geocode/json?components=postal_code:${zip_code}%20&key=AIzaSyCItqD_bz3EaNVbnFP7aXzr_Thj0slENpU`
-    // );
-    // const payload = await response.json();
+  //function to get parna times based on location input
+  const getSunTimes = async () => {
+    const response = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?components=postal_code:${zip_code}%20&key=${API_KEY}`
+    );
+    const payload = await response.json();
 
-    // var temp_lat = payload.results[0].geometry.location.lat;
-    // var temp_long = payload.results[0].geometry.location.lng;
+    // latitude and longitude from
+    var temp_lat = payload.results[0].geometry.location.lat;
+    var temp_long = payload.results[0].geometry.location.lng;
 
-    const temp_lat = 40.435471;
-    const temp_long = -74.555847;
+    // const temp_lat = 40.435471;
+    // const temp_long = -74.555847;
 
+    //set address title
+    setAddressTitle(payload.results[0].formatted_address);
+
+    //set sun times into variable based on input location
     var temp_sun = SunCalc.getTimes(new Date(dateTime), temp_lat, temp_long);
 
+    //sun times
     const sunrise = moment(temp_sun.sunrise.toTimeString(), "HH:mm:ss ").format(
       "h:mm A"
     );
@@ -46,6 +83,13 @@ function Sunrise() {
     const sunset = moment(temp_sun.sunset.toTimeString(), "HH:mm:ss ").format(
       "h:mm A"
     );
+
+    setSun({
+      rise: sunrise,
+      set: sunset,
+    });
+
+    //convert sun times to get number of min in daylight
     const sunset_military = moment(
       temp_sun.sunset.toTimeString(),
       "HH:mm:ss "
@@ -55,20 +99,40 @@ function Sunrise() {
       moment(sunset_military, "H:mm"),
       "minutes"
     );
-    const minToAdd = (parseInt(daylight) * -1) / 4;
-    const final_time = moment(sunrise, "h:mm A")
-      .add(minToAdd, "minutes")
-      .format("h:mm A");
-    setPorsi(final_time);
 
-    setSun({
-      rise: sunrise,
-      set: sunset,
-    });
+    // Porsi time = 25%  of min of sunlight + sunrise
+    const porsi_add = (parseInt(daylight) * -1) / 4;
+    const porsi_time = moment(sunrise, "h:mm A")
+      .add(porsi_add, "minutes")
+      .format("h:mm A");
+    setPorsi(porsi_time);
+
+    // navkarsi time = 48 min + sunrise
+    const navkarsi_time = moment(sunrise, "h:mm A")
+      .add(48, "minutes")
+      .format("h:mm A");
+    setNavkarsi(navkarsi_time);
+
+    // sadhporsi time = 37.5%  of min of sunlight + sunrise
+    const sadhporsi_add = ((parseInt(daylight) * -1) / 4) * 1.5;
+    const sadhporsi_time = moment(sunrise, "h:mm A")
+      .add(sadhporsi_add, "minutes")
+      .format("h:mm A");
+    setSadhporsi(sadhporsi_time);
+
+    // purimaddh time = 75%  of min of sunlight + sunrise
+    const purimaddh_add = parseInt(daylight) * -1 * 0.75;
+    const purimaddh_time = moment(sunrise, "h:mm A")
+      .add(purimaddh_add, "minutes")
+      .format("h:mm A");
+    setPurimaddh(purimaddh_time);
+
+    //show times after they are calculated
+    setShow(true);
   };
 
-  const submitZip = async (e) => {
-    
+ //submit function for form
+  const handleSubmit = async (e) => {
     const form = e.currentTarget;
 
     if (form.checkValidity() === false) {
@@ -79,10 +143,8 @@ function Sunrise() {
     if (form.checkValidity() === true) {
       e.preventDefault();
       getSunTimes();
-      setShow(true);
     }
 
-    
     setValidate(true);
   };
 
@@ -90,12 +152,12 @@ function Sunrise() {
     <div>
       <div className="header">
         <Typography variant="h2" align="center">
-          Porsi Calculater
+          Pachkan Calculater
         </Typography>
       </div>
       <Divider />
       <br />
-      <Form noValidate validated={validate} onSubmit={submitZip}>
+      <Form noValidate validated={validate} onSubmit={handleSubmit}>
         <Form.Group className="input-row">
           <Form.Label>Zip Code</Form.Label>
           <Form.Control
@@ -128,10 +190,12 @@ function Sunrise() {
           Submit
         </Button>
       </Form>
+      <br/>
 
       {show ? (
         <>
-          <Paper elevation={3} className="paper">
+          <Typography variant="h4">{addressTitle}</Typography>
+          <Paper elevation={3} className="paper-sunrise">
             <Row className="row">
               <Col>
                 <Typography variant="h5">Sunrise:</Typography>
@@ -140,20 +204,48 @@ function Sunrise() {
                 <Typography variant="body1">{sun.rise}</Typography>
               </Col>
             </Row>
+          </Paper>
+          <Paper elevation={3} className="paper-day">
             <Row className="row">
               <Col>
-                <Typography variant="h5">Sunset:</Typography>
+                <Typography variant="h5">Navkarsi:</Typography>
               </Col>
               <Col>
-                <Typography variant="body1">{sun.set}</Typography>
+                <Typography variant="body1">{navkarsi}</Typography>
               </Col>
             </Row>
             <Row className="row">
               <Col>
-                <Typography variant="h5">PORSI:</Typography>
+                <Typography variant="h5">Porsi:</Typography>
               </Col>
               <Col>
                 <Typography variant="body1">{porsi}</Typography>
+              </Col>
+            </Row>
+            <Row className="row">
+              <Col>
+                <Typography variant="h5">Sadhporsi:</Typography>
+              </Col>
+              <Col>
+                <Typography variant="body1">{sadhporsi}</Typography>
+              </Col>
+            </Row>
+            <Row className="row">
+              <Col>
+                <Typography variant="h5" className="sunset-typography" >Purimaddh-Avaddh:</Typography>
+              </Col>
+              <Col>
+                <Typography variant="body1" className="sunset-typography">{purimaddh}</Typography>
+              </Col>
+            </Row>
+          </Paper>
+          <Paper elevation={3} className="paper-sunset">
+            <Row className="row">
+              <Col>
+                <Typography variant="h5" className="sunset-typography">Sunset:</Typography>
+              </Col>
+              <Col>
+                <Typography variant="body1" className="sunset-typography">{sun.set}</Typography>
               </Col>
             </Row>
           </Paper>

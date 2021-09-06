@@ -8,7 +8,7 @@
     margin : auto;
 }
 
-.paper {
+.paper-sunrise,.paper-day,.paper-sunset {
     width: 300px;
     margin: auto;
 }
@@ -17,3 +17,30 @@
     margin: 20px;
 }
 
+.paper-sunrise {
+    background-image: url('../images/sunrise.jpg');
+
+}
+.paper-day {
+    background-image: url('../images/day.jpg');
+
+}
+
+.paper-sunset {
+    background-image: url('../images/sunset.jpg');
+
+
+}
+
+.paper-sunrise::before,.paper-day::before,.paper-sunset::before {
+    content: "";
+    position: absolute;
+    background-color: rgba(0,0,0,0.75);
+}
+
+
+
+
+.sunset-typography {
+    color:white;
+}
